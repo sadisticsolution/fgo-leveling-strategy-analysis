@@ -129,6 +129,9 @@ $(function () {
         case "adjust_all_in": numberOfCards = executeAdjustAllIn(scenario); break;
         case "adjust_assume_super": numberOfCards = executeAdjustAssumeSuper(scenario); break;
         case "adjust_assume_great": numberOfCards = executeAdjustAssumeGreat(scenario); break;
+        case "maximize_level_all_in": numberOfCards = executeMaximizeAllIn(scenario); break;
+        case "maximize_level_assume_super": numberOfCards = executeMaximizeAssumeSuper(scenario); break;
+        case "maximize_level_assume_great": numberOfCards = executeMaximizeAssumeGreat(scenario); break;
         case "drip_feed": numberOfCards = executeDripFeed(scenario); break;
         default:
           throw "Invalid strategy passed to extendScenario()";
@@ -225,16 +228,27 @@ $(function () {
       return numberOfCards <= 20 ? numberOfCards : 20;
     }
 
+    function executeMaximize(scenario) {
+      var currentLevel = getCurrentLevelForExperience(scenario.current_experience),
+          targetLevel = scenario.target_level;
+
+      if (currentLevel == targetLevel)
+        return 0;
+
+      var targetExperience = getRequiredExperienceForLevel(currentLevel + 1),
+          requiredExperience = targetExperience - scenario.current_experience,
+          experiencePerCard = scenario.experience_per_card,
+          numberOfCards = Math.floor(requiredExperience / experiencePerCard);
+
+      return numberOfCards <= 20 ? numberOfCards : 20;
+    }
+
     function executeAdjustAllIn(scenario) {
       if (scenario.rounds == 0) {
         return executeAdjust(scenario);
       }
 
-      var remainingExperience = scenario.target_experience - scenario.current_experience,
-          experiencePerCard = scenario.experience_per_card,
-          numberOfCards = Math.ceil(remainingExperience / experiencePerCard);
-
-      return numberOfCards <= 20 ? numberOfCards : 20;
+      return executeAllIn(scenario);
     }
 
     function executeAdjustAssumeSuper(scenario) {
@@ -242,12 +256,7 @@ $(function () {
         return executeAdjust(scenario);
       }
 
-      var remainingExperience = scenario.target_experience - scenario.current_experience,
-          experiencePerCard = scenario.experience_per_card,
-          superBonus = scenario.super_bonus,
-          numberOfCards = Math.ceil(remainingExperience / (experiencePerCard * superBonus));
-
-      return numberOfCards <= 20 ? numberOfCards : 20;
+      return executeAssumeSuper(scenario);
     }
 
     function executeAdjustAssumeGreat(scenario) {
@@ -255,12 +264,25 @@ $(function () {
         return executeAdjust(scenario);
       }
 
-      var remainingExperience = scenario.target_experience - scenario.current_experience,
-          experiencePerCard = scenario.experience_per_card,
-          greatBonus = scenario.great_bonus,
-          numberOfCards = Math.ceil(remainingExperience / (experiencePerCard * greatBonus));
+      return executeAssumeGreat(scenario);
+    }
 
-      return numberOfCards <= 20 ? numberOfCards : 20;
+    function executeMaximizeAllIn(scenario) {
+      var numberOfCards = executeMaximize(scenario);
+
+      return numberOfCards > 0 ? numberOfCards : executeAllIn(scenario);
+    }
+
+    function executeMaximizeAssumeSuper(scenario) {
+      var numberOfCards = executeMaximize(scenario);
+
+      return numberOfCards > 0 ? numberOfCards : executeAssumeSuper(scenario);
+    }
+
+    function executeMaximizeAssumeGreat(scenario) {
+      var numberOfCards = executeMaximize(scenario);
+
+      return numberOfCards > 0 ? numberOfCards : executeAssumeGreat(scenario);
     }
 
     function executeDripFeed(scenario) {
