@@ -278,6 +278,8 @@ $(function () {
   }
 
   function outputResults(results) {
+    console.log(results);
+
     $('#results .number_of_scenarios').text(results.number_of_scenarios);
     $('#results .probablity_coverage').text("" + results.probablity_coverage + "%");
     $('#results .average_number_of_cards_used').text(results.average_number_of_cards_used);
