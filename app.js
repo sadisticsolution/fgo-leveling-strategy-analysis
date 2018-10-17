@@ -1,6 +1,9 @@
 $(function () {
 
   $('#calculate').click(function () {
+    alert("Work in progress");
+    return;
+
     var parameters = getParameters(),
         scenarios = iterateScenarios(parameters),
         results = combineResults(scenarios);
@@ -78,7 +81,7 @@ $(function () {
       "cards_used": 0,
       "qp_used": 0,
       "probability": 1
-    });
+    }));
 
     incompleteScenarios = scenarios;
 
