@@ -19,12 +19,12 @@
           <div class="col-sm-8">
             <div class="input-group">
               <select id=strategy class="custom-select custom-select-sm">
-                <option>All In</option>
-                <option>Assume Super</option>
-                <option>Assume Great</option>
-                <option>Adjust then All In</option>
-                <option>Adjust then Assume Super</option>
-                <option>Adjust then Assume Great</option>
+                <option value="all_in">All In</option>
+                <option value="assume_super">Assume Super</option>
+                <option value="assume_great">Assume Great</option>
+                <option value="adjust_all_in">Adjust then All In</option>
+                <option value="adjust_assume_super">Adjust then Assume Super</option>
+                <option value="adjust_assume_great">Adjust then Assume Great</option>
               </select>
               <div class="input-group-append">
                 <button type="button" class="btn btn-outline-secondary" data-toggle="popover" data-content="<ul><li>All In: Put the maximum amount of cards able each time.</li><li>Assume Super/Great: Assume that a super or great will proc and prevent waste of experience.</li><li>Adjust: First, align experience total to experience target so only 20x experience cards are required afterwards.</li></ul>">
@@ -39,11 +39,11 @@
           <label class="col-sm-4 col-form-label">Rarity</label>
           <div class="col-sm-8">
             <select id=rarity class="custom-select custom-select-sm">
-              <option selected>5 Star</option>
-              <option>4 Star</option>
-              <option>3 Star</option>
-              <option>2 Star</option>
-              <option>1 Star</option>
+              <option value="5" selected>5 Star</option>
+              <option value="4">4 Star</option>
+              <option value="3">3 Star</option>
+              <option value="2">2 Star</option>
+              <option value="1">1 Star</option>
             </select>
           </div>
         </div>
@@ -139,7 +139,7 @@
 
         <div class="form-group row">
           <div class="col-sm-8 offset-sm-4 text-right">
-            <button class="btn btn-primary">Calculate</button>
+            <button type="button" id="calculate" class="btn btn-primary">Calculate</button>
           </div>
         </div>
 
@@ -153,12 +153,14 @@
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="data.js"></script>
+  <script type="text/javascript" src="app.js"></script>
   <script type="text/javascript">
     $(function () {
       $('[data-toggle="popover"]').popover({
         html: true
       })
-    })
+    });
   </script>
 </body>
 </html>
