@@ -2,10 +2,7 @@ $(function () {
 
   $('#calculate').click(function () {
     var parameters = getParameters(),
-        scenarios = iterateScenarios(parameters),
-        results = combineResults(scenarios);
-
-    outputResults(results);
+        results = iterateScenarios(parameters);
   });
 
   function getParameters() {
@@ -66,10 +63,16 @@ $(function () {
     return parameters;
   }
 
-  function iterateScenarios(parameters) {
+  async function iterateScenarios(parameters) {
     var scenarios = [],
-        incompleteScenarios,
-        extendedScenarios;
+        extendedScenarios,
+        results = {
+          number_of_scenarios: 0,
+          probablity_coverage: 0,
+          average_number_of_cards_used: 0,
+          average_qp_used: 0
+        },
+        loops = 1;
 
     scenarios.push($.extend({}, parameters, {
       "uid": "",
@@ -82,47 +85,51 @@ $(function () {
       "current_level": parameters.start_level
     }));
 
-    incompleteScenarios = scenarios;
-
-    while (incompleteScenarios.length) {
-      for (var i in incompleteScenarios) {
-        extendedScenarios = extendScenario(incompleteScenarios[i], parameters);
-
-        scenarios = scenarios.concat(extendedScenarios).filter(function (scenario) {
-          return scenario.uid != incompleteScenarios[i].uid;
-        });
+    while (scenarios.length) {
+      if (loops % 1000 == 0) {
+        outputResults(results);
+        await sleep(100);
       }
 
-      incompleteScenarios = scenarios.filter(function (scenario) {
+      extendedScenarios = extendScenario(scenarios[0], parameters);
+
+      scenarios = extendedScenarios.concat(scenarios).filter(function (scenario) {
+        return scenario.uid != scenarios[0].uid;
+      });
+
+      scenarios = scenarios.filter(function (scenario) {
+        if (scenario.complete) {
+          results.number_of_scenarios += 1;
+          results.probablity_coverage += scenario.probability;
+          results.average_number_of_cards_used += scenario.cards_used * scenario.probability;
+          results.average_qp_used += scenario.qp_used * scenario.probability;
+        }
+
         return !scenario.complete;
       });
+
+      loops++;
     }
 
-    return scenarios;
+    outputResults(results);
+    console.log(results);
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
     function extendScenario(scenario) {
       var extendedScenarios = [],
           numberOfCards;
 
       switch (scenario.strategy) {
-        case "all_in":
-          numberOfCards = executeAllIn(scenario);
-          break;
-        case "assume_super":
-          numberOfCards = executeAssumeSuper(scenario);
-          break;
-        case "assume_great":
-          numberOfCards = executeAssumeGreat(scenario);
-          break;
-        case "adjust_all_in":
-          numberOfCards = executeAdjustAllIn(scenario);
-          break;
-        case "adjust_assume_super":
-          numberOfCards = executeAdjustAssumeSuper(scenario);
-          break;
-        case "adjust_assume_great":
-          numberOfCards = executeAdjustAssumeGreat(scenario);
-          break;
+        case "all_in": numberOfCards = executeAllIn(scenario); break;
+        case "assume_super": numberOfCards = executeAssumeSuper(scenario); break;
+        case "assume_great": numberOfCards = executeAssumeGreat(scenario); break;
+        case "adjust_all_in": numberOfCards = executeAdjustAllIn(scenario); break;
+        case "adjust_assume_super": numberOfCards = executeAdjustAssumeSuper(scenario); break;
+        case "adjust_assume_great": numberOfCards = executeAdjustAssumeGreat(scenario); break;
+        case "drip_feed": numberOfCards = executeDripFeed(scenario); break;
         default:
           throw "Invalid strategy passed to extendScenario()";
       }
@@ -255,6 +262,10 @@ $(function () {
 
       return numberOfCards <= 20 ? numberOfCards : 20;
     }
+
+    function executeDripFeed(scenario) {
+      return 1;
+    }
   }
 
   function combineResults(scenarios) {
@@ -278,12 +289,14 @@ $(function () {
   }
 
   function outputResults(results) {
-    console.log(results);
+    var probablity_coverage = Math.round(results.probablity_coverage * 100 * 1000) / 1000,
+        average_number_of_cards_used = Math.round(results.average_number_of_cards_used / results.probablity_coverage * 1000) / 1000,
+        average_qp_used = Math.round(results.average_qp_used / results.probablity_coverage * 1000) / 1000;
 
     $('#results .number_of_scenarios').text(results.number_of_scenarios);
-    $('#results .probablity_coverage').text("" + results.probablity_coverage + "%");
-    $('#results .average_number_of_cards_used').text(results.average_number_of_cards_used);
-    $('#results .average_qp_used').text(results.average_qp_used);
+    $('#results .probablity_coverage').text("" + probablity_coverage + "%");
+    $('#results .average_number_of_cards_used').text(average_number_of_cards_used);
+    $('#results .average_qp_used').text(average_qp_used);
   }
 
   function getCurrentLevelForExperience(experience) {
