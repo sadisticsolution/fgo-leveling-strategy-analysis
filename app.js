@@ -255,26 +255,6 @@ $(function () {
     }
   }
 
-  function combineResults(scenarios) {
-    return {
-      scenarios: scenarios,
-      number_of_scenarios: scenarios.length,
-      probablity_coverage: Math.round(scenarios.reduce(function (carry, scenario) {
-          return carry + scenario.probability;
-        }, 0) * 100 * 1000) / 1000,
-      average_number_of_cards_used: Math.round(scenarios.map(function (scenario) {
-          return scenario.cards_used * scenario.probability;
-        }).reduce(function (carry, weightedNumberOfCards) {
-          return carry + weightedNumberOfCards;
-        }, 0) * 1000) / 1000,
-      average_qp_used: Math.round(scenarios.map(function (scenario) {
-          return scenario.qp_used * scenario.probability;
-        }).reduce(function (carry, weightedQpUsed) {
-          return carry + weightedQpUsed;
-        }, 0) * 1000) / 1000,
-    };
-  }
-
   function outputResults(results) {
     var probablity_coverage = Math.round(results.probablity_coverage * 100 * 1000) / 1000,
         average_number_of_cards_used = Math.round(results.average_number_of_cards_used / results.probablity_coverage * 1000) / 1000,
