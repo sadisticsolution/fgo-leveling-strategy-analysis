@@ -16,6 +16,8 @@ $(function () {
       start_level: parseInt($('#start_level').val()),
       target_level: parseInt($('#target_level').val()),
       experience_per_card: parseInt($('#exp_per_card').val()),
+      card_ap_value: parseFloat($('#card_ap_value').val()),
+      qp_ap_value: parseFloat($('#qp_ap_value').val()) / 1000000,
     };
 
     parameters.start_experience = getRequiredExperienceForLevel(parameters.start_level);
@@ -31,7 +33,9 @@ $(function () {
           number_of_scenarios: 0,
           probablity_coverage: 0,
           average_number_of_cards_used: 0,
-          average_qp_used: 0
+          average_qp_used: 0,
+          card_ap_value: parameters.card_ap_value,
+          qp_ap_value: parameters.qp_ap_value
         },
         loops = 1;
 
@@ -274,12 +278,14 @@ $(function () {
   function outputResults(results) {
     var probablity_coverage = Math.round(results.probablity_coverage * 100 * 1000) / 1000,
         average_number_of_cards_used = Math.round(results.average_number_of_cards_used / results.probablity_coverage * 1000) / 1000,
-        average_qp_used = Math.round(results.average_qp_used / results.probablity_coverage * 1000) / 1000;
+        average_qp_used = Math.round(results.average_qp_used / results.probablity_coverage * 1000) / 1000,
+        average_ap_value = Math.round(((average_number_of_cards_used * results.card_ap_value) + (average_qp_used * results.qp_ap_value)) * 1000) / 1000;
 
     $('#results .number_of_scenarios').text(results.number_of_scenarios);
     $('#results .probablity_coverage').text("" + probablity_coverage + "%");
     $('#results .average_number_of_cards_used').text(average_number_of_cards_used);
     $('#results .average_qp_used').text(average_qp_used);
+    $('#results .average_converted_ap_value').text(average_ap_value);
   }
 
   function getCurrentLevelForExperience(experience) {

@@ -153,6 +153,34 @@
         </div>
 
         <div class="form-group row">
+          <label class="col-sm-4 col-form-label">AP Value of Card</label>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <input type="text" id=card_ap_value class="form-control form-control-sm" value="4.9" />
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary" data-toggle="popover" data-content="How much AP is required to farm 1 card. Used to calculate converted AP value.">
+                  <i class="fas fa-info"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">AP Value of 1 Million QP</label>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <input type="text" id=qp_ap_value class="form-control form-control-sm" value="32.99" />
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary" data-toggle="popover" data-content="How much AP is required to farm 1 million QP. Used to calculate converted AP value.">
+                  <i class="fas fa-info"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
           <div class="col-sm-8 offset-sm-4 text-right">
             <button type="button" id="calculate" class="btn btn-primary">Calculate</button>
           </div>
@@ -180,6 +208,10 @@
             <tr>
               <th>Average QP Used</th>
               <td class="average_qp_used text-right"></td>
+            </tr>
+            <tr>
+              <th>Average Converted AP Value</th>
+              <td class="average_converted_ap_value text-right"></td>
             </tr>
           </tbody>
         </table>
