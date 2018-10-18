@@ -109,19 +109,30 @@
         </div>
 
         <div class="form-group row">
-          <label class="col-sm-4 col-form-label">Level Range</label>
+          <label class="col-sm-4 col-form-label">Start Level</label>
           <div class="col-sm-8">
-            <select id=level_range class="custom-select custom-select-sm">
-              <option>1-60</option>
-              <option>60-70</option>
-              <option>70-80</option>
-              <option>80-90</option>
-              <option>90-92</option>
-              <option>92-94</option>
-              <option>94-96</option>
-              <option>96-98</option>
-              <option>98-100</option>
-            </select>
+            <div class="input-group">
+              <input type="text" id=start_level class="form-control form-control-sm" value="1" />
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary" data-toggle="popover" data-content="Level range to start. Calculator DOES NOT handle level caps due to ascensions. Only put calculate each ascension level range separately.">
+                  <i class="fas fa-info"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">End Level</label>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <input type="text" id=target_level class="form-control form-control-sm" value="60" />
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary" data-toggle="popover" data-content="Level range to end. Calculator DOES NOT handle level caps due to ascensions. Only put calculate each ascension level range separately.">
+                  <i class="fas fa-info"></i>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 

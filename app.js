@@ -13,49 +13,10 @@ $(function () {
       super_bonus: (parseFloat($('#super_bonus').val()) / 100) + 1,
       great_chance: parseFloat($('#great_chance').val()) / 100,
       great_bonus: (parseFloat($('#great_bonus').val()) / 100) + 1,
+      start_level: parseInt($('#start_level').val()),
+      target_level: parseInt($('#target_level').val()),
       experience_per_card: parseInt($('#exp_per_card').val()),
     };
-
-    switch($('#level_range').val()) {
-      case "1-60":
-        parameters.start_level = 1;
-        parameters.target_level = 60;
-        break;
-      case "60-70":
-        parameters.start_level = 60;
-        parameters.target_level = 70;
-        break;
-      case "70-80":
-        parameters.start_level = 70;
-        parameters.target_level = 80;
-        break;
-      case "80-90":
-        parameters.start_level = 80;
-        parameters.target_level = 90;
-        break;
-      case "90-92":
-        parameters.start_level = 90;
-        parameters.target_level = 92;
-        break;
-      case "92-94":
-        parameters.start_level = 92;
-        parameters.target_level = 94;
-        break;
-      case "94-96":
-        parameters.start_level = 94;
-        parameters.target_level = 96;
-        break;
-      case "96-98":
-        parameters.start_level = 96;
-        parameters.target_level = 98;
-        break;
-      case "98-100":
-        parameters.start_level = 98;
-        parameters.target_level = 100;
-        break;
-      default:
-        throw "Invalid level_range passed to getParameters()";
-    }
 
     parameters.start_experience = getRequiredExperienceForLevel(parameters.start_level);
     parameters.target_experience = getRequiredExperienceForLevel(parameters.target_level);
